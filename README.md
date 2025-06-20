@@ -24,6 +24,7 @@ An intelligent event co-host that enhances human-created event listings with AI-
 ```bash
 pip install -r requirements.txt
 python app.py
+```
 
 Set model="llama3.2" or update the model name based on your Ollama config.
 
