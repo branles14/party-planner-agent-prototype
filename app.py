@@ -49,6 +49,7 @@ def generate_response(
 def build_interface() -> gr.Blocks:
     """Create the Gradio Blocks interface."""
 
+
     with gr.Blocks(title="Party Planner Chat") as demo:
         with gr.Row():
             with gr.Column():
@@ -65,6 +66,7 @@ def build_interface() -> gr.Blocks:
                 output = gr.Textbox(label="AI Response")
         submit = gr.Button("Submit")
         submit.click(
+
             generate_response,
             inputs=[
                 title,
@@ -85,4 +87,4 @@ def build_interface() -> gr.Blocks:
 interface = build_interface()
 
 if __name__ == "__main__":
-    interface.launch(share=True)
+    build_interface().launch(share=True)
