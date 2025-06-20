@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 import gradio as gr
+from gradio.components.chatbot import ChatMessage
 from langchain_ollama import OllamaLLM
 
 # Initialize the language model using the same model as tests/hello_world.py
@@ -25,7 +26,7 @@ class Address:
 
 def generate_chat_response(
     message: str,
-    history: list[tuple[str, str]],
+    history: list[ChatMessage | dict],
     title: str,
     date_time: str,
     street: str,
@@ -34,19 +35,30 @@ def generate_chat_response(
     zip_code: str,
     country: str,
     description: str,
-) -> tuple[str, list[tuple[str, str]]]:
+) -> tuple[str, list[ChatMessage]]:
     """Return a chat completion from the Ollama model using event context."""
 
     address = Address(
         street=street, city=city, state=state_field, zip_code=zip_code, country=country
     )
-    conversation = "\n".join(f"User: {user}\nAI: {bot}" for user, bot in history)
+    conversation_lines: list[str] = []
+    for msg in history:
+        if isinstance(msg, dict):
+            role = msg.get("role", "assistant")
+            content = msg.get("content", "")
+        else:
+            role = msg.role
+            content = msg.content
+        speaker = "User" if role == "user" else "AI"
+        conversation_lines.append(f"{speaker}: {content}")
+    conversation = "\n".join(conversation_lines)
     full_prompt = (
         f"Event Title: {title}\nDate: {date_time}\nLocation: {address}\n"
         f"Description: {description}\n\n{conversation}\nUser: {message}\nAI:"
     )
     response = llm.invoke(full_prompt)
-    history.append((message, response))
+    history.append(ChatMessage(content=message, role="user"))
+    history.append(ChatMessage(content=response, role="assistant"))
     return "", history
 
 
