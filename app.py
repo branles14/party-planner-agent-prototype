@@ -23,32 +23,35 @@ class Address:
         )
 
 
-def generate_response(
+def generate_chat_response(
+    message: str,
+    history: list[tuple[str, str]],
     title: str,
     date_time: str,
     street: str,
     city: str,
-    state: str,
+    state_field: str,
     zip_code: str,
     country: str,
     description: str,
-    prompt: str,
-) -> str:
-    """Return a completion from the Ollama model using event context."""
+) -> tuple[str, list[tuple[str, str]]]:
+    """Return a chat completion from the Ollama model using event context."""
 
     address = Address(
-        street=street, city=city, state=state, zip_code=zip_code, country=country
+        street=street, city=city, state=state_field, zip_code=zip_code, country=country
     )
+    conversation = "\n".join(f"User: {user}\nAI: {bot}" for user, bot in history)
     full_prompt = (
         f"Event Title: {title}\nDate: {date_time}\nLocation: {address}\n"
-        f"Description: {description}\n\nUser Prompt: {prompt}"
+        f"Description: {description}\n\n{conversation}\nUser: {message}\nAI:"
     )
-    return llm.invoke(full_prompt)
+    response = llm.invoke(full_prompt)
+    history.append((message, response))
+    return "", history
 
 
 def build_interface() -> gr.Blocks:
-    """Create the Gradio Blocks interface."""
-
+    """Create the Gradio Blocks interface with a chat dialogue."""
 
     with gr.Blocks(title="Party Planner Chat") as demo:
         with gr.Row():
@@ -57,29 +60,28 @@ def build_interface() -> gr.Blocks:
                 date_time = gr.components.DateTime(label="Date & Time")
                 street = gr.Textbox(label="Street Address")
                 city = gr.Textbox(label="City")
-                state = gr.Textbox(label="State")
+                state_field = gr.Textbox(label="State")
                 zip_code = gr.Textbox(label="ZIP Code")
                 country = gr.Textbox(label="Country")
                 description = gr.Textbox(label="Description", lines=4)
-            with gr.Column():
-                prompt = gr.Textbox(label="Prompt")
-                output = gr.Textbox(label="AI Response")
-        submit = gr.Button("Submit")
-        submit.click(
-
-            generate_response,
+        chatbot = gr.Chatbot(label="Chat Dialogue")
+        message = gr.Textbox(label="Your Message")
+        send = gr.Button("Send")
+        send.click(
+            generate_chat_response,
             inputs=[
+                message,
+                chatbot,
                 title,
                 date_time,
                 street,
                 city,
-                state,
+                state_field,
                 zip_code,
                 country,
                 description,
-                prompt,
             ],
-            outputs=output,
+            outputs=[message, chatbot],
         )
     return demo
 
