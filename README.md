@@ -1,1 +1,1 @@
-# party-host-agent-demo
+# Party Planner Agent Prototype
