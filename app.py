@@ -20,8 +20,9 @@ interface = gr.Interface(
     inputs=[
         gr.Textbox(label="Event Title"),
         gr.components.DateTime(label="Date"),
+        gr.Textbox(label="Location"),
         gr.Textbox(label="Description", lines=2),
-        gr.Textbox(lines=2, placeholder="Enter your prompt here", label="Prompt"),
+        gr.Textbox(lines=3, placeholder="Enter your prompt here", label="Prompt"),
     ],
     outputs="text",
     title="Party Planner Chat",
