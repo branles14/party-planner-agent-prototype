@@ -64,7 +64,7 @@ def build_interface() -> gr.Blocks:
                 zip_code = gr.Textbox(label="ZIP Code")
                 country = gr.Textbox(label="Country")
                 description = gr.Textbox(label="Description", lines=4)
-        chatbot = gr.Chatbot(label="Chat Dialogue")
+        chatbot = gr.Chatbot(type="messages")
         message = gr.Textbox(label="Your Message")
         send = gr.Button("Send")
         send.click(
