@@ -19,8 +19,7 @@ interface = gr.Interface(
     fn=generate_response,
     inputs=[
         gr.Textbox(label="Event Title"),
-        gr.components.DateTime(label="Date", include_time=False),
-        gr.components.DateTime(label="Time"),
+        gr.components.DateTime(label="Date"),
         gr.Textbox(label="Description", lines=2),
         gr.Textbox(lines=2, placeholder="Enter your prompt here", label="Prompt"),
     ],
