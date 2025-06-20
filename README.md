@@ -11,6 +11,7 @@ An intelligent event co-host that enhances human-created event listings with AI-
   - Simulate RSVP messages for UX testing
   - Recommend alternate venues if needed
   - Generate shopping lists with affiliate links
+  - **New Chat Dialogue** for conversation with the AI helper
 
 ## 🛠 Tech Stack
 
