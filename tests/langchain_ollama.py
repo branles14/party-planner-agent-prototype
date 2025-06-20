@@ -1,6 +1,5 @@
-from langchain_community.llms import Ollama
+from langchain_ollama import OllamaLLM
 
-llm = Ollama(model="llama3.2")
-
-response = llm.invoke("Tell me a monkey fact!")
+llm = OllamaLLM(model="llama3.2")
+response = llm.invoke("Give me a monkey fact.")
 print(response)
