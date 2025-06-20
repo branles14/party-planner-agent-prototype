@@ -24,3 +24,25 @@ An intelligent event co-host that enhances human-created event listings with AI-
 ```bash
 pip install -r requirements.txt
 python app.py
+
+Set model="llama3.2" or update the model name based on your Ollama config.
+
+📦 Roadmap
+
+[ ] Add real-time weather API integration
+
+[ ] Implement AI-generated cover image
+
+[ ] Guest message queue + host-side relay
+
+[ ] Alt venue suggester (based on map data)
+
+
+❤️ Vision
+
+To build a flexible, respectful AI assistant that collaborates with the event host—not overrides them. The goal is smarter planning, not automated replacement.
+
+
+---
+
+Built for fun, function, and maybe to impress someone.
