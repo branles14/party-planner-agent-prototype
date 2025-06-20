@@ -46,23 +46,43 @@ def generate_response(
     return llm.invoke(full_prompt)
 
 
-# Basic Gradio interface with a text box for the prompt
-interface = gr.Interface(
-    fn=generate_response,
-    inputs=[
-        gr.Textbox(label="Event Title"),
-        gr.components.DateTime(label="Date & Time"),
-        gr.Textbox(label="Street Address"),
-        gr.Textbox(label="City"),
-        gr.Textbox(label="State"),
-        gr.Textbox(label="ZIP Code"),
-        gr.Textbox(label="Country"),
-        gr.Textbox(label="Description", lines=4),
-        gr.Textbox(label="Prompt"),
-    ],
-    outputs="text",
-    title="Party Planner Chat",
-)
+def build_interface() -> gr.Blocks:
+    """Create the Gradio Blocks interface."""
+
+    with gr.Blocks(title="Party Planner Chat") as demo:
+        with gr.Row():
+            with gr.Column():
+                title = gr.Textbox(label="Event Title")
+                date_time = gr.components.DateTime(label="Date & Time")
+                street = gr.Textbox(label="Street Address")
+                city = gr.Textbox(label="City")
+                state = gr.Textbox(label="State")
+                zip_code = gr.Textbox(label="ZIP Code")
+                country = gr.Textbox(label="Country")
+                description = gr.Textbox(label="Description", lines=4)
+            with gr.Column():
+                prompt = gr.Textbox(label="Prompt")
+                output = gr.Textbox(label="AI Response")
+        submit = gr.Button("Submit")
+        submit.click(
+            generate_response,
+            inputs=[
+                title,
+                date_time,
+                street,
+                city,
+                state,
+                zip_code,
+                country,
+                description,
+                prompt,
+            ],
+            outputs=output,
+        )
+    return demo
+
+
+interface = build_interface()
 
 if __name__ == "__main__":
     interface.launch(share=True)
