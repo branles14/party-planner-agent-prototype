@@ -1,0 +1,3 @@
+- Keep the code modular and manageable.
+- Follow best practices.
+- Test with black.
